@@ -35,7 +35,9 @@ module SimplesIdeias
       # rewrite path cache hash at startup and before each request in development
       config.to_prepare do
         next unless SimplesIdeias::I18n.has_asset_pipeline?
-        SimplesIdeias::I18n::Engine.write_hash_if_changed unless Rails.env.production?
+        if Rails.env.development? || Rails.env.test?
+          SimplesIdeias::I18n::Engine.write_hash_if_changed
+        end
       end
 
       def self.load_path_hash_cache
